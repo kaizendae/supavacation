@@ -2,6 +2,27 @@ import Layout from '@/components/Layout';
 import ListingForm from '@/components/ListingForm';
 import axios from 'axios';
 
+export async function getServerSideProps(context) {
+  // Check if user is authenticated
+  const session = await getSession(context);
+
+  // If not, redirect to the homepage
+  if (!session) {
+    return {
+      redirect: {
+        // you can also redirect to unauthorized page
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  
+  return {
+    props: {}
+  }
+}
+
+
 const Create = () => {
   const addHome = data => axios.post('/api/homes', data);
 
