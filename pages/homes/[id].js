@@ -47,20 +47,20 @@ const ListedHome = (home = null) => {
     </Layout>
   );
 };
-// export async function getStaticPaths() {
-//     // Get all the homes IDs from the database
-//     const homes = await prisma.home.findMany({
-//       select: { id: true },
-//     });
+export async function getStaticPaths() {
+    // Get all the homes IDs from the database
+    const homes = await prisma.home.findMany({
+      select: { id: true },
+    });
   
-//     return {
-//       paths: homes.map(home => ({
-//         params: { id: home.id },
-//       })),
-//       fallback: false,
-//     };
-//   }                 
-export async function getServerSideProps({ params }) {
+    return {
+      paths: homes.map(home => ({
+        params: { id: home.id },
+      })),
+      fallback: true,
+    };
+  }                 
+export async function getStaticProps({ params }) {
     // Get the current home from the database
     const home = await prisma.home.findUnique({
       where: { id: params.id },
