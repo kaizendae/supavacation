@@ -1,13 +1,11 @@
 import Layout from '@/components/Layout';
 import Grid from '@/components/Grid';
 import { getSession } from 'next-auth/react';
-import { PrismaClient } from '@prisma/client';
-
+import { prisma } from '@/lib/prisma';
 
 export async function getServerSideProps(context) {
   // Check if user is authenticated
   const session = await getSession(context);
-  const prisma = new PrismaClient();
 
 // If not, redirect to the homepage
   if (!session) {

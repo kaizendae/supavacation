@@ -1,6 +1,5 @@
 
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 import { getSession } from 'next-auth/react';
 
 export default async function handler(req, res) {

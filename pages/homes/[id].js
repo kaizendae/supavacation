@@ -2,14 +2,13 @@
 
 import Image from 'next/image';
 import Layout from '@/components/Layout';
-import { PrismaClient } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
 
 const ListedHome = (home = null) => {
   const { data: session } = useSession();
