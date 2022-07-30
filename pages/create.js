@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import ListingForm from '@/components/ListingForm';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
 export async function getServerSideProps(context) {
   // Check if user is authenticated
