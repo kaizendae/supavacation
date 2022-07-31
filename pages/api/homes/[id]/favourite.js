@@ -2,12 +2,11 @@ import { getSession } from 'next-auth/react';
 import { prisma } from '@/lib/prisma';
 
 export default async function handler(req, res) {
-    // const session = await getSession({ req });
-    // if (!session) {
-    //     return res.status(401).json({ message: 'Unauthorized.' });
-    // }
-    let session= {user: {email : 'thegeekstudent@gmail.com', id:'cl66gnjej0030nq9kn86vh4ip'}}
-
+    const session = await getSession({ req });
+    if (!session) {
+        return res.status(401).json({ message: 'Unauthorized.' });
+    }
+// 
     // TODO: Retrieve home ID from request
     const { id } = req.query;
 
