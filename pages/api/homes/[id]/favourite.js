@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     // if (!session) {
     //     return res.status(401).json({ message: 'Unauthorized.' });
     // }
-    let session= {user: {email : 'thegeekstudent@gmail.com'}}
+    let session= {user: {email : 'thegeekstudent@gmail.com', id:'cl66gnjej0030nq9kn86vh4ip'}}
 
     // TODO: Retrieve home ID from request
     const { id } = req.query;
@@ -18,18 +18,11 @@ export default async function handler(req, res) {
     // TODO: Add home to favorite
     if (req.method === 'PUT') {
         try{
-            const user = await prisma.user.findUniqueOrThrow({
-                where: {
-                    email: session.user.email,
-                },
-              });
-            console.log(user);
-            console.log(prisma.userFavourite);
             const userFavourites = await prisma.userFavourite.create({
                 data: {
-                    userId: user.id,
+                    userId: session.user.id,
                     homeId: id,
-                    assignedBy: user.email,
+                    assignedBy: session.user.email,
                 },
             });
             const favouriteHomes = await prisma.home.findMany({
@@ -37,22 +30,39 @@ export default async function handler(req, res) {
                     users: {
                         some: {
                             user: {
-                                id: user.id
+                                id: session.user.id
                             }
                         }
                     }
                 }
             })
-            console.log(favouriteHomes);
             res.status(200).json(favouriteHomes);
         } catch(e) {
             res.status(500).json({message: `something went wrong ${e}`})
         }
         
     }
-    // TODO: Remove home from favorite
     else if (req.method === 'DELETE') {
-        //...
+        try{
+            const user = await prisma.user.findUniqueOrThrow({
+                where: {
+                    email: session.user.email,
+                },
+              });
+            console.log(user);
+            console.log(prisma.userFavourite);
+            const deletedUserFavourite = await prisma.userFavourite.delete({
+                where: {
+                    userId_homeId: {
+                          userId: session.user.id,
+                          homeId: id
+                        },
+                },
+            });
+            res.status(200).json(deletedUserFavourite);
+        } catch(e) {
+            res.status(500).json({message: `something went wrong ${e}`})
+        }
     }
   // HTTP method not supported!
   else {
